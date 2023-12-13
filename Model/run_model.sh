@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 #SBATCH --job-name=frag_red_hab
-#SBATCH --mail-user=stag86@zedat.fu-berlin.de
+#SBATCH --mail-user=
 #SBATCH --mail-type=end
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
