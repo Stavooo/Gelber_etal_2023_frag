@@ -1,0 +1,61 @@
+require(ggplot2)
+require(vegan)
+require(reshape2)
+require(dplyr)
+
+source("src/parameters.R")
+
+test_number <- 6
+data_all <- list.files(path = paste("C:/Stav_FU/Results/data/test",test_number, sep = ""), 
+                       pattern = "output_general", full.names = TRUE) 
+
+read_data <- lapply(data_all, read.csv)
+data <- bind_rows(read_data)
+rep_number <- 10
+steps <- mod_par$steps_pre_frag+mod_par$steps_post_frag
+
+c<-0
+
+for (i in 1:(rep_number * length(frag_factor_vector))){
+  
+  data$sim_id[(c*steps+1):(steps*c+steps)] <- i 
+  c <- c+1
+}
+
+labels <- sort(rep(frag_factor_vector, rep_number))
+
+ggplot(data = data, aes(x = step, y = individuals, colour = as.factor(sim_id))) +
+  geom_line(size = 1) +
+  labs(x = "Time", y = "Individuals", colour = "Fragmentation") +
+  scale_colour_discrete(name = "Fragmentation", labels = labels)
+
+ggplot(data = data, aes(x = step, y = present_species, colour = as.factor(sim_id))) +
+  geom_line(size = 1) +
+  labs(x = "Time", y = "Species Richness", colour = "Fragmentation") +
+  scale_colour_discrete(name = "Fragmentation", labels = labels)
+
+ggplot(data = data, aes(x = step, y = shannon, colour = as.factor(sim_id))) +
+  geom_line(size = 1) +
+  labs(x = "Time", y = "Shannon Diversity", colour = "Fragmentation") +
+  scale_colour_discrete(name = "Fragmentation", labels = labels)
+
+box_clean <- data[data$step == 71, ]
+
+ggplot(box_clean, aes(x = as.factor(fragmentation), y = individuals, fill = as.factor(step))) +
+  geom_boxplot() +
+  theme_bw() +
+  scale_fill_discrete(name = "steps", labels = c("step 71 (after fragmentation)")) +
+  labs(x = "Fragmentation", y = "Individuals", title = "Geometric effects")
+
+ggplot(box_clean, aes(x = as.factor(fragmentation), y = present_species, fill = as.factor(step))) +
+  geom_boxplot() +
+  theme_bw() +
+  scale_fill_discrete(name = "steps", labels = c("step 71 (after fragmentation)")) +
+  labs(x = "Fragmentation", y = "Species Richness", title = "Geometric effects")
+
+ggplot(box_clean, aes(x = as.factor(fragmentation), y = shannon, fill = as.factor(step))) +
+ 
+    geom_boxplot() +
+  theme_bw() +
+  scale_fill_discrete(name = "steps", labels = c("step 71 (after fragmentation)")) +
+  labs(x = "Fragmentation", y = "Shannon Diversity", title = "Geometric effects")
