@@ -83,8 +83,14 @@ result_seq <- foreach(
 result_par <- purrr::transpose(result_seq)
 
 # rbind all results
-output_all <- data.table::rbindlist(result_par[["output_all"]], idcol = "sim_id")
-output_sample <- data.table::rbindlist(result_par[["output_sample"]], idcol = "sim_id")
+output_all <- data.table::rbindlist(
+  result_par[["output_all"]], 
+  idcol = "sim_id"
+)
+output_sample <- data.table::rbindlist(
+  result_par[["output_sample"]], 
+  idcol = "sim_id"
+)
 
 # write them to disk
 data.table::fwrite(
@@ -108,11 +114,11 @@ data.table::fwrite(
 # Run in a loop (parallel) ------------------------------------------------
 # how many cores to use (here 1 less than is available)
 workers <- parallel::detectCores() - 1
-my.cluster <- parallel::makeCluster(
-  workers, 
+my_cluster <- parallel::makeCluster(
+  workers,
   type = "PSOCK" # PSOCK works on both Win and UNIX
 )
-doParallel::registerDoParallel(cl = my.cluster)
+doParallel::registerDoParallel(cl = my_cluster)
 
 result_par <- foreach(
   i = 1:5,
