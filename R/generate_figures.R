@@ -24,7 +24,8 @@ panel1 <- ggplot(data = landscape, aes(x = as.factor(fragmentation), y = richnes
   geom_errorbar(stat = "summary", fun.data = "mean_se", width = 0.2, aes(color = as.factor(richness_scale)), size = 1.2) +
   labs(x = "fragmentation level", y = "species richness", title = "Landscape scale") +
   scale_color_discrete(type = palette_dis4[c(1, 3)], name = "", labels = c("Net effects", "Geometric effects")) +
-  geom_smooth(method = lm, se = FALSE, aes(group = as.factor(richness_scale), color = as.factor(richness_scale)), size = 0.5, alpha = 0.5) +
+  geom_smooth(method = lm, se = FALSE, aes(group = as.factor(richness_scale), color = as.factor(richness_scale)), size = 0.5, alpha = 0.5) + 
+  theme_bw() +
   theme(text = element_text(size = 15), legend.position = "bottom")
 
 panel2 <- ggplot(data = sample, aes(x = as.factor(fragmentation), y = richness_val, color = as.factor(richness_scale))) +
@@ -32,7 +33,8 @@ panel2 <- ggplot(data = sample, aes(x = as.factor(fragmentation), y = richness_v
   geom_errorbar(stat = "summary", fun.data = "mean_se", width = 0.2, aes(color = as.factor(richness_scale)), size = 1.2) +
   labs(x = "fragmentation level", y = "species richness", title = "Sample scale") +
   scale_color_discrete(type = palette_dis4[c(2, 4)], name = "", labels = c("Net effects", "Geometric effects")) +
-  geom_smooth(method = lm, se = FALSE, aes(group = as.factor(richness_scale), color = as.factor(richness_scale)), size = 0.5, alpha = 0.5) +
+  geom_smooth(method = lm, se = FALSE, aes(group = as.factor(richness_scale), color = as.factor(richness_scale)), size = 0.5, alpha = 0.5) + 
+  theme_bw() +
   theme(text = element_text(size = 15), legend.position = "bottom")
 
 # function for extracting legend only
@@ -87,7 +89,7 @@ data_disp1 <- cur_sim %>%
 plot_lan_1 <- ggplot(data_disp1, aes(x = as.factor(fragmentation), y = present_species, color = as.factor(step))) +
   stat_summary(fun.data = "mean_se", geom = "point", size = 1.5) +
   geom_errorbar(stat = "summary", fun.data = "mean_se", width = 0.2, aes(color = as.factor(step)), size = 0.6) +
-  theme_grey() +
+  theme_bw() +
   scale_color_discrete(type = palette_dis4[c(3, 1)], name = "", labels = c("Geometric", "Net effects")) +
   labs(x = "Fragmentation", y = "Richness") +
   geom_smooth(method = "lm", se = FALSE, aes(group = step), linewidth = 0.5) +
@@ -103,7 +105,7 @@ data_disp2 <- cur_sim %>%
 plot_lan_2 <- ggplot(data_disp2, aes(x = as.factor(fragmentation), y = present_species, color = as.factor(step))) +
   stat_summary(fun.data = "mean_se", geom = "point", size = 1.5) +
   geom_errorbar(stat = "summary", fun.data = "mean_se", width = 0.2, aes(color = as.factor(step)), size = 0.6) +
-  theme_grey() +
+  theme_bw() +
   scale_color_discrete(type = palette_dis4[c(3, 1)], name = "", labels = c("Geometric", "Net effects")) +
   labs(x = "Fragmentation", y = "Richness") +
   geom_smooth(method = "lm", se = FALSE, aes(group = step), linewidth = 0.5) +
@@ -119,7 +121,7 @@ data_disp3 <- cur_sim %>%
 plot_lan_3 <- ggplot(data_disp3, aes(x = as.factor(fragmentation), y = present_species, color = as.factor(step))) +
   stat_summary(fun.data = "mean_se", geom = "point", size = 1.5) +
   geom_errorbar(stat = "summary", fun.data = "mean_se", width = 0.2, aes(color = as.factor(step)), size = 0.6) +
-  theme_grey() +
+  theme_bw() +
   scale_color_discrete(type = palette_dis4[c(3, 1)], name = "", labels = c("Geometric", "Net effects")) +
   labs(x = "Fragmentation", y = "Richness") +
   geom_smooth(method = "lm", se = FALSE, aes(group = step), linewidth = 0.5) +
@@ -129,7 +131,7 @@ plot_lan_3 <- ggplot(data_disp3, aes(x = as.factor(fragmentation), y = present_s
 plot_sam_1 <- ggplot(data_disp1, aes(x = as.factor(fragmentation), y = sample_species_mean, color = as.factor(step))) +
   stat_summary(fun.data = "mean_se", geom = "point", size = 1.5) +
   geom_errorbar(stat = "summary", fun.data = "mean_se", width = 0.2, aes(color = as.factor(step)), size = 0.6) +
-  theme_grey() +
+  theme_bw() +
   scale_color_discrete(type = palette_dis4[c(4, 2)], name = "", labels = c("Geometric", "Net effects")) +
   labs(x = "Fragmentation", y = "Richness") +
   geom_smooth(method = "lm", se = FALSE, aes(group = step), linewidth = 0.5) +
@@ -142,7 +144,7 @@ plot_sam_1 <- ggplot(data_disp1, aes(x = as.factor(fragmentation), y = sample_sp
 plot_sam_2 <- ggplot(data_disp2, aes(x = as.factor(fragmentation), y = sample_species_mean, color = as.factor(step))) +
   stat_summary(fun.data = "mean_se", geom = "point", size = 1.5) +
   geom_errorbar(stat = "summary", fun.data = "mean_se", width = 0.2, aes(color = as.factor(step)), size = 0.6) +
-  theme_grey() +
+  theme_bw() +
   scale_color_discrete(type = palette_dis4[c(4, 2)], name = "", labels = c("Geometric", "Net effects")) +
   labs(x = "Fragmentation", y = "Richness") +
   geom_smooth(method = "lm", se = FALSE, aes(group = step), linewidth = 0.5) +
@@ -155,7 +157,7 @@ plot_sam_2 <- ggplot(data_disp2, aes(x = as.factor(fragmentation), y = sample_sp
 plot_sam_3 <- ggplot(data_disp3, aes(x = as.factor(fragmentation), y = sample_species_mean, color = as.factor(step))) +
   stat_summary(fun.data = "mean_se", geom = "point", size = 1.5) +
   geom_errorbar(stat = "summary", fun.data = "mean_se", width = 0.2, aes(color = as.factor(step)), size = 0.6) +
-  theme_grey() +
+  theme_bw() +
   scale_color_discrete(type = palette_dis4[c(4, 2)], name = "", labels = c("Geometric", "Net effects")) +
   labs(x = "Fragmentation", y = "Richness") +
   geom_smooth(method = "lm", se = FALSE, aes(group = step), linewidth = 0.5) +
@@ -180,7 +182,7 @@ for (i in 1:6) {
 
 agg <- ggplot(data_lm, aes(x = disp_dist, y = estimate, color = as.factor(step))) +
   geom_point(size = 5) +
-  theme_grey() +
+  theme_bw() +
   theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm")) +
   labs(x = "Dispersal distance", y = "Slope", title = "Aggregated") +
   scale_color_discrete(type = palette_dis4[c(3, 1)], name = "", labels = c("Geometric", "Net effects")) +

@@ -5,7 +5,6 @@
 
 distribute_agent <- function(gr_size, agents_list = agents, space, nb) {
 
-
  
   # extract the extent of the simulation space raster, convert to matrix and create blank matrix
   extent <- extent(space)
