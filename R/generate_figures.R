@@ -1,7 +1,7 @@
 library(ggplot2)
 library(gridExtra)
 library(grid)
-
+library(cowplot)
 
 source("R/prepare_data_scale_new.R")
 source("R/prepare_data_disp_new.R")
@@ -24,7 +24,7 @@ panel1 <- ggplot(data = landscape, aes(x = as.factor(fragmentation), y = richnes
   geom_errorbar(stat = "summary", fun.data = "mean_se", width = 0.2, aes(color = as.factor(richness_scale)), size = 1.2) +
   labs(x = "fragmentation level", y = "species richness", title = "Landscape scale") +
   scale_color_discrete(type = palette_dis4[c(1, 3)], name = "", labels = c("Net effects", "Geometric effects")) +
-  geom_smooth(method = lm, se = FALSE, aes(group = as.factor(richness_scale), color = as.factor(richness_scale)), size = 0.5, alpha = 0.5) + 
+  geom_smooth(method = lm, se = FALSE, aes(group = as.factor(richness_scale), color = as.factor(richness_scale)), size = 0.5, alpha = 0.5) +
   theme_bw() +
   theme(text = element_text(size = 15), legend.position = "bottom")
 
@@ -33,7 +33,7 @@ panel2 <- ggplot(data = sample, aes(x = as.factor(fragmentation), y = richness_v
   geom_errorbar(stat = "summary", fun.data = "mean_se", width = 0.2, aes(color = as.factor(richness_scale)), size = 1.2) +
   labs(x = "fragmentation level", y = "species richness", title = "Sample scale") +
   scale_color_discrete(type = palette_dis4[c(2, 4)], name = "", labels = c("Net effects", "Geometric effects")) +
-  geom_smooth(method = lm, se = FALSE, aes(group = as.factor(richness_scale), color = as.factor(richness_scale)), size = 0.5, alpha = 0.5) + 
+  geom_smooth(method = lm, se = FALSE, aes(group = as.factor(richness_scale), color = as.factor(richness_scale)), size = 0.5, alpha = 0.5) +
   theme_bw() +
   theme(text = element_text(size = 15), legend.position = "bottom")
 
@@ -284,6 +284,16 @@ tit_sam <- textGrob("Sample", gp = gpar(fontsize = 13), rot = 90)
 tit_spec <- textGrob("Species richness", gp = gpar(fontsize = 15), rot = 90)
 tit_frag <- textGrob("Fragmentation level", gp = gpar(fontsize = 15))
 
+# Add labels to each plot
+plot_lan_1 <- plot_lan_1 + ggtitle("(d)")
+plot_lan_2 <- plot_lan_2 + ggtitle("(e)")
+plot_lan_3 <- plot_lan_3 + ggtitle("(f)")
+plot_sam_1 <- plot_sam_1 + ggtitle("(a)")
+plot_sam_2 <- plot_sam_2 + ggtitle("(b)")
+plot_sam_3 <- plot_sam_3 + ggtitle("(c)")
+agg <- agg + ggtitle("(g)")
+
+# Adjust the layout to include the titles
 layout <- rbind(
   c(NA, NA, 1, 2, 3, NA),
   c(13, 4, 5, 6, 7, 7),
@@ -292,7 +302,15 @@ layout <- rbind(
   c(NA, 12, 12, 12, 12, 12)
 )
 
-mp <- grid.arrange(tit_1, tit_2, tit_3, tit_sam, plot_sam_1, plot_sam_2, plot_sam_3, tit_lan, plot_lan_1, plot_lan_2, plot_lan_3, agg, tit_spec, tit_frag, layout_matrix = layout, widths = c(.05, .05, .265, .265, .27, .1), heights = c(.05, .25, .25, .05, .4))
+# Create the multi-panel plot with labels
+mp <- grid.arrange(
+  tit_1, tit_2, tit_3, tit_sam, plot_sam_1, plot_sam_2, plot_sam_3,
+  tit_lan, plot_lan_1, plot_lan_2, plot_lan_3, agg, tit_spec, tit_frag,
+  layout_matrix = layout,
+  widths = c(.05, .05, .265, .265, .27, .1),
+  heights = c(.05, .25, .25, .05, .4)
+)
+
 ggsave("R/figures/fig4.png", plot = mp, width = 10, height = 8.5)
 
 # Figure 5 ------------------------------------------------------------------
@@ -491,54 +509,56 @@ gedo <- cur_sim$gedo_lm_sam
 demo <- as.data.frame(geo) %>%
   select(-c(data, statistic, p.value, std.error)) %>%
   mutate(estimate = gedo$estimate - geo$estimate)
-# get total simulations and extinctions 
+# get total simulations and extinctions
 
-extinct <- cur_sim$data %>% filter(step == cur_sim$steps[2]) %>%
+extinct <- cur_sim$data %>%
+  filter(step == cur_sim$steps[2]) %>%
   tally(individuals == 0) %>%
   as.numeric()
 
-tot_sim <- cur_sim$data %>% filter(step == cur_sim$steps[2]) %>%
+tot_sim <- cur_sim$data %>%
+  filter(step == cur_sim$steps[2]) %>%
   tally() %>%
   as.numeric()
 
-p1 <- ggplot(cur_sim$gedo_lm_sam, aes(as.factor(ac), as.factor(edge), fill = estimate)) + 
+p1 <- ggplot(cur_sim$gedo_lm_sam, aes(as.factor(ac), as.factor(edge), fill = estimate)) +
   geom_tile() +
-  scale_fill_gradient2( low = "coral2", mid = "white", high = "steelblue",midpoint = 0) +
-  labs(title = "Net effects", x = "landscape autocorrelation", y = "edge effects", fill = "Slope") + 
-  #geom_label(aes(label = round(estimate, 1)), fill = "white" , size = 2.5) + 
-  theme(panel.background = element_blank(), plot.margin = unit(c(0.5,0.5, 0.5,0.5), "cm")) +
+  scale_fill_gradient2(low = "coral2", mid = "white", high = "steelblue", midpoint = 0) +
+  labs(title = "Net effects", x = "landscape autocorrelation", y = "edge effects", fill = "Slope") +
+  # geom_label(aes(label = round(estimate, 1)), fill = "white" , size = 2.5) +
+  theme(panel.background = element_blank(), plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm")) +
   annotate("text", x = 1, y = -0.6, label = "near", size = 3.5) +
   annotate("text", x = 10, y = -0.6, label = "far", size = 3.5) +
   annotate("text", x = -0.5, y = 1.6, label = "positive", size = 3.5, angle = 90) +
   annotate("text", x = -0.5, y = 9.3, label = "negative", size = 3.5, angle = 90) +
   annotate("text", x = 11.5, y = 10, label = "(c)", size = 8) +
-  coord_cartesian(ylim = c(1, 10), xlim = c(1,10), clip = "off")
+  coord_cartesian(ylim = c(1, 10), xlim = c(1, 10), clip = "off")
 
-p2 <- ggplot(cur_sim$geo_lm_sam, aes(as.factor(ac), as.factor(edge), fill = estimate)) + 
+p2 <- ggplot(cur_sim$geo_lm_sam, aes(as.factor(ac), as.factor(edge), fill = estimate)) +
   geom_tile() +
-  scale_fill_gradient2( low = "coral2", mid = "white", high = "steelblue",midpoint = 0) +
-  labs(title = "Geometric", x = "landscape autocorrelation", y = "edge effects", fill = "Slope") + 
-  #geom_label(aes(label = round(estimate, 1)), fill = "white" , size = 2.5) + 
-  theme(panel.background = element_blank(), plot.margin = unit(c(0.5,0.5, 0.5,0.5), "cm")) +
+  scale_fill_gradient2(low = "coral2", mid = "white", high = "steelblue", midpoint = 0) +
+  labs(title = "Geometric", x = "landscape autocorrelation", y = "edge effects", fill = "Slope") +
+  # geom_label(aes(label = round(estimate, 1)), fill = "white" , size = 2.5) +
+  theme(panel.background = element_blank(), plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm")) +
   annotate("text", x = 1, y = -0.6, label = "near", size = 3.5) +
   annotate("text", x = 10, y = -0.6, label = "far", size = 3.5) +
   annotate("text", x = -0.5, y = 1.6, label = "positive", size = 3.5, angle = 90) +
   annotate("text", x = -0.5, y = 9.3, label = "negative", size = 3.5, angle = 90) +
   annotate("text", x = 11.5, y = 10, label = "(a)", size = 8) +
-  coord_cartesian(ylim = c(1, 10), xlim = c(1,10), clip = "off")
+  coord_cartesian(ylim = c(1, 10), xlim = c(1, 10), clip = "off")
 
-p3 <- ggplot(demo, aes(as.factor(ac), as.factor(edge), fill = estimate)) + 
+p3 <- ggplot(demo, aes(as.factor(ac), as.factor(edge), fill = estimate)) +
   geom_tile() +
-  scale_fill_gradient2( low = "coral2", mid = "white", high = "steelblue",midpoint = 0) +
-  labs(title = "Demographic", x = "landscape autocorrelation", y = "edge effects", fill = "Slope") + 
-  #geom_label(aes(label = round(estimate, 1)), fill = "white" , size = 2.5) + 
-  theme(panel.background = element_blank(), plot.margin = unit(c(0.5,0.5, 0.5,0.5), "cm")) +
+  scale_fill_gradient2(low = "coral2", mid = "white", high = "steelblue", midpoint = 0) +
+  labs(title = "Demographic", x = "landscape autocorrelation", y = "edge effects", fill = "Slope") +
+  # geom_label(aes(label = round(estimate, 1)), fill = "white" , size = 2.5) +
+  theme(panel.background = element_blank(), plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm")) +
   annotate("text", x = 1, y = -0.6, label = "near", size = 3.5) +
   annotate("text", x = 10, y = -0.6, label = "far", size = 3.5) +
   annotate("text", x = -0.5, y = 1.6, label = "positive", size = 3.5, angle = 90) +
   annotate("text", x = -0.5, y = 9.3, label = "negative", size = 3.5, angle = 90) +
   annotate("text", x = 11.5, y = 10, label = "(b)", size = 8) +
-  coord_cartesian(ylim = c(1, 10), xlim = c(1,10), clip = "off")
+  coord_cartesian(ylim = c(1, 10), xlim = c(1, 10), clip = "off")
 
 multi_plot <- gridExtra::grid.arrange(p2, p3, p1, ncol = 1)
 ggsave("R/figures/figs3b.png", plot = multi_plot, width = 6, height = 13)
