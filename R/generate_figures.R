@@ -37,30 +37,27 @@ panel2 <- ggplot(data = sample, aes(x = as.factor(fragmentation), y = richness_v
   theme_bw() +
   theme(text = element_text(size = 15), legend.position = "bottom")
 
-# function for extracting legend only
-
+# Function for extracting legend only
 get_only_legend <- function(plot) {
-  # get tabular interpretation of plot
   plot_table <- ggplot_gtable(ggplot_build(plot))
-
-  #  Mark only legend in plot
   legend_plot <- which(sapply(plot_table$grobs, function(x) x$name) == "guide-box")
-
-  # extract legend
   legend <- plot_table$grobs[[legend_plot]]
-
-  # return legend
   return(legend)
 }
 
-# extract legend
+# Extract legends
 legend1 <- get_only_legend(panel1)
 legend2 <- get_only_legend(panel2)
 
-# remove legends from panel1 and panel2
+# Remove legends from panel1 and panel2
 panel1 <- panel1 + theme(legend.position = "none")
 panel2 <- panel2 + theme(legend.position = "none")
 
+# Add labels to panels using cowplot
+panel1 <- ggdraw(panel1) + draw_label("(b)", x = 0.02, y = 0.98, hjust = 0, vjust = 1, size = 15)
+panel2 <- ggdraw(panel2) + draw_label("(a)", x = 0.02, y = 0.98, hjust = 0, vjust = 1, size = 15)
+
+# Arrange the plots
 lay <- rbind(
   c(1, 2),
   c(4, 3)
@@ -70,8 +67,8 @@ hig <- c(9, 1)
 
 multi_plot <- gridExtra::grid.arrange(panel2, panel1, legend1, legend2, nrow = 2, ncol = 3, heights = hig, layout_matrix = lay)
 
-ggsave("R/figures/fig3.png", plot = multi_plot, width = 12, height = 6)
-
+# Save the figure
+ggsave("R/figures/fig3.jpg", plot = multi_plot, width = 12, height = 6, dpi = 400)
 
 # Figure 4 ------------------------------------------------------------------
 
@@ -311,7 +308,7 @@ mp <- grid.arrange(
   heights = c(.05, .25, .25, .05, .4)
 )
 
-ggsave("R/figures/fig4.png", plot = mp, width = 10, height = 8.5)
+ggsave("R/figures/fig4.jpg", plot = mp, width = 10, height = 13.5, dpi = 400)
 
 # Figure 5 ------------------------------------------------------------------
 
@@ -377,7 +374,7 @@ p3 <- ggplot(demo, aes(as.factor(disp_dist), as.factor(edge), fill = estimate)) 
   coord_cartesian(ylim = c(1, 10), xlim = c(1, 10), clip = "off")
 
 multi_plot <- gridExtra::grid.arrange(p2, p3, p1, ncol = 1)
-ggsave("R/figures/fig5.png", plot = multi_plot, width = 6, height = 13)
+ggsave("R/figures/fig5.jpg", plot = multi_plot, width = 6, height = 13, dpi = 400)
 
 # Figure 6 ------------------------------------------------------------------
 
@@ -442,7 +439,9 @@ p1 <- ggplot(cur_sim$gedo_lm, aes(as.factor(ac), as.factor(edge), fill = estimat
   coord_cartesian(ylim = c(1, 10), xlim = c(1, 10), clip = "off")
 
 multi_plot <- gridExtra::grid.arrange(p2, p3, p1, ncol = 1)
-ggsave("R/figures/fig6.png", plot = multi_plot, width = 6, height = 13)
+ggsave("R/figures/fig6.jpg", plot = multi_plot, width = 6, height = 13, dpi = 400)
+
+
 
 # Figure S3A ----------------------------------------------------------------
 
