@@ -12,20 +12,20 @@ seed <- 2027
 
 switch <- data.frame(
   animation_export = 0, # determine whether plots from each time-step are exported for later animation. 0 = no, 1 = yes (keep OFF when running on cluster!)
-  random = 1, # determine whether set.seed is used for the spin up phase. 0 = random, 1 = deterministic
+  random = 0, # determine whether set.seed is used for the spin up phase. 0 = random, 1 = deterministic
   random_post_frag = 0, # determine whether set.seed is used for fragmenting landscape. 0 = random, 1 = non-random
   random_community = 0, # determine whether to introduce randomness in species distribution. 0 = random, 1 = non-random
   sample_all = 0, # number of samples according to sample parameter or sample all possible cells. 0 = parameter, 1 = all
   immigration = 1, # determine if individuals from outside the space can immigrate back in. 0 = no, 1 = yes
-  
+
   ############
   # this switch is very problematic as it can override "var_par" in certain cases e.g with edge effects in "death" function.
   # This need to be examined and maybe removed. For now, leave at 0!!
   species_specific_par = 0, # determine if species have non/some/"all" unique parameters 0 = deterministic, 1 = some, 2 = "all"
   ############
-  
+
   kernel_type = 1, # choose type of dispersal kernel.  0 = log-normal distribution, 1 = Exponential Distribution
-  edge_effect = 1, # 0 = no edge effects 1 = with edge effects
+  edge_effect = 0, # 0 = no edge effects 1 = with edge effects
   print_agents = 1, # for debugging. if switch = 1 a message with amount of agents in each step is printed
   export_raster = 0 # 0 = don't export gri and grd files of samples locations, 1 = export
 )
@@ -39,7 +39,7 @@ if (switch$random == 1) {
 mod_par <- data.frame(
   grid_size = 50, # side length of a square grid
   habitat_percent = 0.15, # 0-1 proportion of habitat vs matrix
-  spatial_ac = 0.1, # autocorrelation of habitat 0 (rough) - 1 (smooth)
+  spatial_ac = 0.9, # autocorrelation of habitat 0 (rough) - 1 (smooth)
   frag_factor = 0.7, # level of fragmentation 0 (unified) - 1 (fragmented)
   n_pop = 5000, # setting amount of individuals
   n_species = 1000, # setting number of species
@@ -103,12 +103,12 @@ if (switch$species_specific_par == 2) {
 
 vp_switch <- data.frame(
   frag = 1,
-  ac = 1,
+  ac = 0,
   hab = 0,
   nb = 0,
   disp = 0,
   disp_dist = 0,
-  edge = 1
+  edge = 0
 )
 # Creating a table of varying parameter values using expand.grid() for the multiple runs function.
 # Only fragmentation, auto-correlation, and habitat percent are adjustable and will override the settings of 'par'.
@@ -160,4 +160,3 @@ var_par <- expand.grid(
   disp_dist = disp_dist_vector,
   edge = edge_effect_vector
 )
-
