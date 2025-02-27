@@ -1,27 +1,47 @@
 # Geometric and demographic effects explain contrasting fragmentation-biodiversity relationships across scales
 
-
 <!-- badges: start -->
 <!-- badges: end -->
 
-*This repository contains the code and data to reproduce the analyses and figures in the paper: Geometric and demographic effects explain contrasting fragmentation-biodiversity relationships across scales*
+*This repository contains the code and data for our study on how habitat fragmentation affects biodiversity across spatial scales. Using a process-based metacommunity model, we explore how geometric and demographic effects shape fragmentation–biodiversity relationships. Below, you’ll find details on how to reproduce our results and run the model.*
 
-## Authors
+## Manuscript
 
-- Stav Gelber, Shane A. Blowes, Jonathan M. Chase, Andreas Huth, Frank M. Schurr, Britta Tietjen, Julian W. Zeller, Felix May
+Gelber*, S., Blowes, S. A., Chase, J. M., Huth, A., Schurr, F. M., Tietjen, B., Zeller, J. W. and May, F. 2025. Geometric and demographic effects explain contrasting fragmentation-biodiversity relationships across scales. – Oikos, DOI: 10.1002/oik.10778.
+
+*stav.gelber@fu-berlin.de
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Read the preprint
+Please cite code and data: DOI
+- Stav Gelber, Shane A. Blowes, Jonathan M. Chase, Andreas Huth, Frank M. Schurr, Britta Tietjen, Julian W. Zeller, and Felix May
+
+## Abstract
+
+There is consensus that habitat loss is a major driver of biodiversity loss, while the effects of fragmentation, given a constant total habitat amount, are still debated. Here, we use a process-based metacommunity model to show how scale- and context-dependent fragmentation–-biodiversity relationships can emerge from the interplay of two types of fragmentation effects – geometric and demographic. Geometric effects arise from the spatial distributions of species and landscape modification, whereas demographic effects reflect long-term changes in species demographic rates following landscape modification. Our spatial model considers sessile individuals in a heterogeneous landscape and dynamically simulates the processes of species reproduction, dispersal, competition, mortality, and immigration. We introduce a novel approach to partition geometric and demographic fragmentation effects that is based on model outputs directly after landscape modification and after a phase of community dynamics in the modified landscape. In detailed simulation experiments, we assessed how key ecological processes and factors, such as dispersal, habitat heterogeneity, and edge effects, influence geometric, demographic, and net fragmentation effects across spatial scales. We found that increasing intraspecific aggregation due to short dispersal and/or environmental autocorrelation increased positive geometric fragmentation effects at the landscape scale. In our model, negative demographic fragmentation effects emerged at the local and landscape scale due to high dispersal mortality in the matrix and due to negative edge effects. We showed that the model can simultaneously predict positive fragmentation-biodiversity relationships at the local scale and negative relationships at the landscape scale as well as context-dependent variation of these relationships at the landscape scale. We conclude that the framework of geometric and demographic effects can reconcile previous apparently conflicting results and hopefully unlock and advance the debate on biodiversity changes in modified landscapes.
 
 ## Structure of the repository
 
--   `data-raw/`: Raw data from model simulations used to produce the figures. Each dataset includes the model parameters used to produce it.
--   `Model/`: Source code to run the model simulations as well as R sripts to run the model locally and on a cluster.
--   `R/`: R scripts to reproduce the figures in the paper from the raw data.
+-   `data-raw/` – Contains raw model simulation data used to generate figures. Each dataset includes corresponding model parameters.
+-   `Model/` – Contains source code for running simulations, along with R scripts for executing the model locally or on a computing cluster.
+-   `R/` – R scripts for generating figures from raw data.
+-   `Model/outputs/` – Model output files, including general and sample-scale output files for each model repetition as well as separate files for the model's static and varying parameters.
 
+A single file storing the model's static parameters.
+
+A single file storing the model's varying parameters.
+  
 ## How to reproduce the figures
 
 1. Clone this repository to your computer.
 
-2. Adjust the parameter file according to the parameters in the "...static_parameters.csv" file in the data-raw folder. 
+2. Unzip the output files under `data-raw/model_output/fig_s3a` and `data-raw/model_output/fig_s3b`
 
-3. Run the model either on a cluster using  `Model/cluster_model_run.R` or locally using `Model/run_model.R`.
+3. Run the script `R/generate_figures.R`
 
-4. Run the R scripts in the `R/` folder to reproduce the figures.
+## How to run the model
+
+1. Adjust the parameter file (`Model/parameters.R`). To reproduce previous runs, you can adjust it according to the static parameter file in each of the data subfolders under `data-raw/model_output`.
+
+2. Execute the model using `Model/cluster_model_run.R` for cluster runs or `Model/run_model.R` for local runs.
+
+3. Output files will be written to `Model/outputs` and will include a general and sample-scale output file for each model repetition, as well as separate files for the model's static and varying parameters.
