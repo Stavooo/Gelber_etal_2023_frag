@@ -22,11 +22,6 @@ There is consensus that habitat loss is a major driver of biodiversity loss, whi
 -   `data-raw/` – Contains raw model simulation data used to generate figures. Each dataset includes corresponding model parameters.
 -   `Model/` – Contains source code for running simulations, along with R scripts for executing the model locally or on a computing cluster.
 -   `R/` – R scripts for generating figures from raw data.
--   `Model/outputs/` – Model output files, including general and sample-scale output files for each model repetition as well as separate files for the model's static and varying parameters.
-
-A single file storing the model's static parameters.
-
-A single file storing the model's varying parameters.
   
 ## How to reproduce the figures
 
@@ -42,4 +37,4 @@ A single file storing the model's varying parameters.
 
 2. Execute the model using `Model/cluster_model_run.R` for cluster runs or `Model/run_model.R` for local runs.
 
-3. Output files will be written to `Model/outputs` and will include a general and sample-scale output file for each model repetition, as well as separate files for the model's static and varying parameters.
+3. Output files will be written to a new folder (`Model/outputs`) and will include a general and sample-scale output file for each model repetition, as well as separate files for the model's static and varying parameters.
