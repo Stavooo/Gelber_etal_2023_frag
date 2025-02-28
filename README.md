@@ -11,9 +11,7 @@ Gelber*, S., Blowes, S. A., Chase, J. M., Huth, A., Schurr, F. M., Tietjen, B., 
 
 *stav.gelber@fu-berlin.de
 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Read the preprint
-Please cite code and data: DOI
-- Stav Gelber, Shane A. Blowes, Jonathan M. Chase, Andreas Huth, Frank M. Schurr, Britta Tietjen, Julian W. Zeller, and Felix May
+- [Read the preprint](https://www.biorxiv.org/content/10.1101/2024.02.01.577731v1)
 
 ## Abstract
 
