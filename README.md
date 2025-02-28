@@ -12,6 +12,7 @@ Gelber*, S., Blowes, S. A., Chase, J. M., Huth, A., Schurr, F. M., Tietjen, B., 
 *stav.gelber@fu-berlin.de
 
 - [Read the preprint](https://www.biorxiv.org/content/10.1101/2024.02.01.577731v1)
+- [![DOI](https://zenodo.org/badge/731115734.svg)](https://doi.org/10.5281/zenodo.14944795)
 
 ## Abstract
 
